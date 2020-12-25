@@ -87,6 +87,12 @@ public class UserController extends BaseController {
         return iUserService.getUserListByCustomerId(query.getLimit(), query.getSearch(), query.getId());
     }
 
+    @RequestMapping("/hzGetUserListByCustomerId.json")
+    @ResponseBody
+    public ResultInfo hzGetUserListByCustomerId(@RequestBody ListQuery query){
+        return iUserService.getUserListByCustomerId(query.getLimit(), query.getPageNum(),query.getSearch(), query.getId());
+    }
+
     @PostMapping("modifyUserStatus.json")
     @ResponseBody
     public ResultInfo modifyUserStatus(@RequestBody JSONObject json){

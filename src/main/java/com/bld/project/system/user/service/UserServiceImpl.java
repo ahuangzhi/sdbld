@@ -593,6 +593,16 @@ public class UserServiceImpl implements IUserService
     }
 
     @Override
+    public ResultInfo getUserListByCustomerId(Integer limit,Integer pageNum, String search, String customerId) {
+        if (StringUtils.isBlank(customerId)){
+            return ResultInfo.error("客户ID不能为空");
+        }
+        String url = getUserListByCustomerIdApi(limit, pageNum,search, customerId);
+        JSONObject j = TbApiUtils.get(url);
+        return j.get("data") == null ? ResultInfo.error("没有查询到数据") : ResultInfo.success(j.get("data"));
+    }
+
+    @Override
     public ResultInfo modifyUserStatus(String userId, Boolean aBoolean) {
         String url = modifyUserStatusApi(userId, aBoolean);
         HashMap<String, String> headerMap = new HashMap<>();

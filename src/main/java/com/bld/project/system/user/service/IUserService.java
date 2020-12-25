@@ -238,6 +238,7 @@ public interface IUserService
      * @return  com.bld.framework.web.domain.ResultInfo
      */
     ResultInfo getUserListByCustomerId(Integer limit, String search, String customerId);
+    ResultInfo getUserListByCustomerId(Integer limit,Integer pageNum, String search, String customerId);
     /**
      * @author SOFAS
      * @date   2020/5/26

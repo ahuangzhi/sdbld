@@ -28,7 +28,7 @@ public class TbApiUtils {
     /**
      * tb服务器
      */
-    private static final String THINGS_BOARD_HOST = "http://125.64.98.21:8088";
+    private static final String THINGS_BOARD_HOST = "http://124.128.148.108:21016";
     /**
      * 本地
      */
@@ -190,6 +190,10 @@ public class TbApiUtils {
         return THINGS_BOARD_HOST + "/api/customer/" + customerId + "/users?limit=" + limit + "&textSearch=" + (StringUtils.isBlank(search) ? "" : search);
     }
 
+    public static String getUserListByCustomerIdApi(Integer limit,Integer pageNum, String search, String customerId){
+        return THINGS_BOARD_HOST + "/api/customer/" + customerId + "/users?pageSize=" + limit + "&page=" + pageNum + "&textSearch=" + (StringUtils.isBlank(search) ? "" : search)+"&sortProperty=createdTime&sortOrder=DESC";
+    }
+
     public static String modifyUserStatusApi(String userId, boolean status){
         return THINGS_BOARD_HOST + "/api/user/" + userId + "/userCredentialsEnabled?userCredentialsEnabled=" + status;
     }
@@ -214,6 +218,19 @@ public class TbApiUtils {
      */
     public static String selectCustomerApi(int limit, String textSearch){
         return THINGS_BOARD_HOST + "/api/customers?limit=" + limit + "&textSearch=" + (StringUtils.isBlank(textSearch) ? "" : textSearch);
+    }
+
+
+
+    /**
+     *
+     * @param limit
+     * @param pageNum
+     * @param textSearch
+     * @return
+     */
+    public static String selectCustomerApi(Integer limit,Integer pageNum, String textSearch){
+        return THINGS_BOARD_HOST+"/api/customers?pageSize="+limit+"&page="+pageNum+"&textSearch="+(StringUtils.isBlank(textSearch) ? "" : textSearch)+"&sortProperty=createdTime&sortOrder=DESC";
     }
 
     /**

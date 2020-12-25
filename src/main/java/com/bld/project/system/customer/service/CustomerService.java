@@ -3,6 +3,7 @@ package com.bld.project.system.customer.service;
 import com.alibaba.fastjson.JSONObject;
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.project.system.customer.domain.Customer;
+import jnr.ffi.annotations.In;
 
 import java.util.List;
 
@@ -45,6 +46,8 @@ public interface CustomerService {
      * @return  com.bld.framework.web.domain.ResultInfo
      */
     ResultInfo selectCustomer(Integer limit, String search);
+
+    ResultInfo selectCustomer(Integer pageSize, Integer pageNum, String search);
 
     ResultInfo<JSONObject> getCustomerName(List<String> ids);
     /**

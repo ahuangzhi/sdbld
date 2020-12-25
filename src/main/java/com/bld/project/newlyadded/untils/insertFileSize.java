@@ -29,15 +29,15 @@ public class insertFileSize implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        long timeMillis = getTimeMillis("11:03:00");
-        System.out.println("进入");
-        long oneDay = 24 * 60 * 60 * 1000;
-        long initDelay = timeMillis- System.currentTimeMillis();
-        initDelay = initDelay>0?initDelay:initDelay+oneDay;
-        scheduledExecutorService.scheduleAtFixedRate(()->{
-            System.out.println("kaishi");
-            besuFileMapper.insertFile(FileUtils.sizeOf(new File("/usr/local/besu"))/1024/1024);
-        },initDelay,oneDay, TimeUnit.MILLISECONDS);
+//        long timeMillis = getTimeMillis("11:03:00");
+//        System.out.println("进入");
+//        long oneDay = 24 * 60 * 60 * 1000;
+//        long initDelay = timeMillis- System.currentTimeMillis();
+//        initDelay = initDelay>0?initDelay:initDelay+oneDay;
+//        scheduledExecutorService.scheduleAtFixedRate(()->{
+//            System.out.println("kaishi");
+//            besuFileMapper.insertFile(FileUtils.sizeOf(new File("/usr/local/besu"))/1024/1024);
+//        },initDelay,oneDay, TimeUnit.MILLISECONDS);
 
     }
 

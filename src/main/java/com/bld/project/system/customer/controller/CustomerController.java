@@ -79,6 +79,12 @@ public class CustomerController extends BaseController {
         return customerService.updateCustomer(json);
     }
 
+    @RequestMapping("hzSelectCustomer.json")
+    @ResponseBody
+    public ResultInfo hzSelectCustomer(@RequestBody ListQuery query){
+        return customerService.selectCustomer(query.getLimit(),query.getPageNum(), query.getSearch());
+    }
+
     @RequestMapping("selectCustomer.json")
     @ResponseBody
     public ResultInfo selectCustomer(@RequestBody ListQuery query){

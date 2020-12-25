@@ -65,6 +65,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ResultInfo selectCustomer(Integer limit,Integer pageNum, String search) {
+        String url = selectCustomerApi(limit,pageNum-1, search);
+        JSONObject j = TbApiUtils.get(url);
+        Object data = j.get("data");
+        return data == null ? ResultInfo.error("没有查询到数据") : ResultInfo.success(j);
+    }
+
+    @Override
     public ResultInfo<JSONObject> getCustomerName(List<String> ids) {
         JSONObject nameJ = new JSONObject();
         for (String id : ids){
