@@ -8,6 +8,7 @@ import com.bld.common.utils.security.ShiroUtils;
 import com.bld.framework.utils.OkHttpUtil;
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.framework.web.domain.ResultListInfo;
+import com.bld.project.sdpo.QueryPo;
 import com.bld.project.system.block.mapper.BlockDeviceMapper;
 import com.bld.project.system.block.mapper.HzBlockDeviceMapper;
 import com.bld.project.system.block.model.Block;
@@ -16,6 +17,7 @@ import com.bld.project.system.customer.service.CustomerService;
 import com.bld.project.system.device.service.DeviceService;
 import com.bld.project.utils.BlockUtils;
 import com.bld.project.utils.ListQuery;
+import com.bld.project.utils.TbApiUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,5 +159,14 @@ public class BlockDeviceServiceImpl implements BlockDeviceService {
         if (!updateBlockDevice(updateBd, whereBd)){
             log.error("区块链设备信息更新失败，更新参数：{}，更新条件：{}", JSONObject.toJSONString(updateBd), JSONObject.toJSONString(whereBd));
         }
+    }
+
+    @Override
+    public ResultInfo hzGetLog(QueryPo queryPo) {
+        String url = TbApiUtils.hzGetLog(queryPo.getPageSize(), queryPo.getPage() - 1, queryPo.getSearch(), queryPo.getStartTime(),
+                queryPo.getEndTime(),queryPo.getSortOrder(),queryPo.getSortProperty());
+        JSONObject j = TbApiUtils.get(url);
+        Object data = j.get("data");
+        return data != null ? ResultInfo.success(j) : ResultInfo.error("没有查询到数据");
     }
 }

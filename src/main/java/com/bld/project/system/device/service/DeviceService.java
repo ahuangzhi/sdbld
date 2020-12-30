@@ -2,6 +2,7 @@ package com.bld.project.system.device.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bld.framework.web.domain.ResultInfo;
+import com.bld.project.sdpo.QueryPo;
 import com.bld.project.system.device.model.TbDevice;
 import org.web3j.crypto.CipherException;
 
@@ -26,16 +27,15 @@ public interface DeviceService {
      * @return  com.bld.framework.web.domain.ResultInfo
      */
     ResultInfo<List<TbDevice>> searchDevice(int limit, String search, String tbToken,String textOffset,String  idOffset);
+    ResultInfo<List<TbDevice>> searchDevice(int limit,int pageNum, String search, String tbToken,String textOffset,String  idOffset);
     /**
      * @author SOFAS
      * @date   2020/7/3
      * @directions  根据设备被分配客户查询设备
-     * @param limit  每页数量
-     * @param search  查询条件
-     * @param id  分配客户id
+
      * @return  com.bld.framework.web.domain.ResultInfo
      */
-    ResultInfo getDeviceListByCustomer(int limit, String search, String id);
+    ResultInfo getDeviceListByCustomer(QueryPo queryPo);
     /**
      * @author SOFAS
      * @date   2020/5/29

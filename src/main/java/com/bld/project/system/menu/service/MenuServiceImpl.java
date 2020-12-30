@@ -68,6 +68,7 @@ public class MenuServiceImpl implements IMenuService
     public List<Menu> selectMenuList(Menu menu)
     {
         List<Menu> menuList = null;
+        System.out.println("MenuServiceImpl1");
         User user = ShiroUtils.getSysUser();
         if (user.isAdmin())
         {
@@ -90,6 +91,7 @@ public class MenuServiceImpl implements IMenuService
     public List<Menu> selectMenuAll()
     {
         List<Menu> menuList = null;
+        System.out.println("MenuServiceImpl2");
         User user = ShiroUtils.getSysUser();
         if (user.isAdmin())
         {

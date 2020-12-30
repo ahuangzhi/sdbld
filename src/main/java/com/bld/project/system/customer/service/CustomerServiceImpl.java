@@ -43,6 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResultInfo deleteCustomer(String userId) {
         String url = deleteCustomerApi(userId);
+        System.out.println("CustomerServiceImpl1");
         ResultInfo resultInfo = OkHttpUtil.bldDeleteJsonParams(url, ShiroUtils.getSysUser().getAuthorization());
         return resultInfo.isSuccess() ? ResultInfo.success("删除成功") : ResultInfo.error("删除失败，请稍后再试");
     }
@@ -51,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     public ResultInfo updateCustomer(JSONObject json) {
         String url = saveCustomerApi();
         HashMap<String, String> headerMap = new HashMap<>();
+        System.out.println("CustomerServiceImpl2");
         headerMap.put("X-Authorization", ShiroUtils.getSysUser().getAuthorization());
         headerMap.put("Content-Type", "application/json");
         return OkHttpUtil.bldPostJsonParams(url, json.toJSONString(), headerMap);

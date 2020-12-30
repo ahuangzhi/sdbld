@@ -16,13 +16,13 @@ import java.util.List;
 public class AssetsServiceImpl implements AssetsService {
 
     @Override
-    public ResultInfo assetsList(int limit, String search) {
-        String url = TbApiUtils.assetsListApi(limit, search);
+    public ResultInfo assetsList(int limit,int pageNum, String search) {
+        String url = TbApiUtils.assetsListApi(limit,pageNum-1, search);
         ResultInfo<String> resultInfo = TbApiUtils.bldGet(url);
         if (resultInfo.isSuccess()){
             JSONObject data = JSONObject.parseObject(resultInfo.getData());
-            List list = JSONObject.parseObject(data.get("data").toString(), List.class);
-            return ResultInfo.success(list, resultInfo.getMessage());
+            //List list = JSONObject.parseObject(data.get("data").toString(), List.class);
+            return ResultInfo.success(data, resultInfo.getMessage());
         }
         return resultInfo;
     }
@@ -39,6 +39,25 @@ public class AssetsServiceImpl implements AssetsService {
             }
         }
         return ResultInfo.success(list1);
+    }
+
+    @Override
+    public ResultInfo hzGetAssetInfos(Integer limit,Integer pageNum) {
+        String url = TbApiUtils.getAssetsTypesApi(limit,pageNum-1);
+        ResultInfo<String> resultInfo = TbApiUtils.bldGet(url);
+        if (resultInfo.isSuccess()){
+            JSONObject data = JSONObject.parseObject(resultInfo.getData());
+            List<JSONObject> list = JSONObject.parseArray(data.getString("data"), JSONObject.class);
+            List<String> listString = new ArrayList<>();
+            for (JSONObject j1 : list){
+                String ids = j1.getString("name");
+                listString.add(ids);
+//                JSONObject j2 = JSONObject.parseObject(ids, JSONObject.class);
+//                j1.put("id", j2.get("id"));
+            }
+            return ResultInfo.success(listString, resultInfo.getMessage());
+        }
+        return ResultInfo.error(resultInfo.getMessage());
     }
 
     @Override
@@ -78,19 +97,19 @@ public class AssetsServiceImpl implements AssetsService {
     }
 
     @Override
-    public ResultInfo clientAssetsList(int limit, String search, String id) {
-        String url = TbApiUtils.clientAssetsList(limit, search, id);
+    public ResultInfo clientAssetsList(int limit,int pageNum, String search, String id) {
+        String url = TbApiUtils.clientAssetsList(limit,pageNum-1, search, id);
         ResultInfo<String> resultInfo = TbApiUtils.bldGet(url);
         if (resultInfo.isSuccess()){
             String data = resultInfo.getData();
             JSONObject json = JSONObject.parseObject(data);
-            List<JSONObject> list = JSONObject.parseArray(json.getString("data"), JSONObject.class);
-            for (JSONObject j1 : list){
-                String ids = j1.getString("id");
-                JSONObject j2 = JSONObject.parseObject(ids, JSONObject.class);
-                j1.put("id", j2.get("id"));
-            }
-            return ResultInfo.success(list);
+//            List<JSONObject> list = JSONObject.parseArray(json.getString("data"), JSONObject.class);
+//            for (JSONObject j1 : list){
+//                String ids = j1.getString("id");
+//                JSONObject j2 = JSONObject.parseObject(ids, JSONObject.class);
+//                j1.put("id", j2.get("id"));
+//            }
+            return ResultInfo.success(json);
         }
         return resultInfo;
     }

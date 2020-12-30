@@ -9,6 +9,7 @@ import com.bld.common.utils.security.ShiroUtils;
 import com.bld.framework.web.controller.BaseController;
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.project.system.user.domain.ThingsboardUser;
+import com.bld.project.system.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -76,14 +77,18 @@ public class LoginController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            if (ShiroUtils.getSysUser() == null) {
+            System.out.println("LoginController");
+            User sysUser = ShiroUtils.getSysUser();
+            Session session2 = ShiroUtils.getSession();
+
+            if (sysUser == null) {
                 subject.logout();
                 Session session1 = ShiroUtils.getSession();
                 session1.setAttribute("errorNum",  errorNum + 1);
                 session1.setAttribute("errorTime",  nowTime);
                 return ResultInfo.error("用户或密码错误");
             }
-            ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
+            ThingsboardUser tbUser = sysUser.getThingsboardUser();
             if (!"4ad271a0-bf61-11ea-aab8-4bc49e65094a".equals(tbUser.getCustomerId().getId()) && !tbUser.isTenantAdmin()){
                 subject.logout();
                 Session session1 = ShiroUtils.getSession();
@@ -94,6 +99,7 @@ public class LoginController extends BaseController {
             session.setAttribute("errorNum",  0);
             session.setAttribute("errorTime",  null);
             Object token1 = ShiroUtils.getTbToken();
+            session2.setAttribute("hzSysUser",sysUser);
             return ResultInfo.success(token1, "登陆成功");
         } catch (NullPointerException e) {
             session.setAttribute("errorNum",  errorNum + 1);

@@ -24,6 +24,7 @@ public class BlockHashServiceImpl implements BlockHashService {
 
     @Override
     public ResultListInfo select(BlockHash bh) {
+        System.out.println("BlockHashServiceImpl");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         String chipId = bh.getChipId();
         String toWallet = bh.getToWallet();

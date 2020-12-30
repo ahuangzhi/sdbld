@@ -30,13 +30,19 @@ public class AssetsController extends BaseController {
     @RequestMapping("assetsList.json")
     @ResponseBody
     public ResultInfo assetsList(@RequestBody ListQuery query){
-        return StringUtils.isNullString(query.getId()) ? assetsService.assetsList(query.getLimit(), query.getSearch()) : assetsService.clientAssetsList(query.getLimit(), query.getSearch(), query.getId());
+        return StringUtils.isNullString(query.getId()) ? assetsService.assetsList(query.getLimit(),query.getPageNum(), query.getSearch()) : assetsService.clientAssetsList(query.getLimit(),query.getPageNum(), query.getSearch(), query.getId());
     }
 
     @RequestMapping("getAssetsTypes.json")
     @ResponseBody
     public ResultInfo getAssetsTypes(){
         return assetsService.getAssetsTypes();
+    }
+
+    @RequestMapping("hzGetAssetInfos.json")
+    @ResponseBody
+    public ResultInfo hzGetAssetInfos(@RequestBody ListQuery query){
+        return assetsService.hzGetAssetInfos(query.getLimit(),query.getPageNum());
     }
 
     @PostMapping("addAsset.json")

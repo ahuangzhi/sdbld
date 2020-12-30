@@ -1,7 +1,9 @@
 package com.bld.project.system.device.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bld.common.utils.StringUtils;
 import com.bld.project.newlyadded.untils.TextPageLink;
+import com.bld.project.sdpo.QueryPo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.bld.common.utils.security.ShiroUtils;
@@ -56,12 +58,45 @@ public class DeviceServiceImpl implements DeviceService{
     }
 
     @Override
-    public ResultInfo getDeviceListByCustomer(int limit, String search, String id) {
-        String url = TbApiUtils.getDeviceListByCustomerIdApi(limit, search, id);
+    public ResultInfo<List<TbDevice>> searchDevice(int limit,int pageNum, String search, String tbToken,String textOffset,String  idOffset) {
+        // String url = TbApiUtils.searchDeviceApi(limit, search);
+        //String url = "http://125.64.98.21:8088/api/tenant/devices?limit="+ limit + (search == null ? "" : "&textSearch=" + search)+"&idOffset="+idOffset+"&textOffset="+textOffset;
+        String url = "http://124.128.148.108:21016/api/tenant/deviceInfos?pageSize="+ limit + "&page="+ (pageNum-1) + (search == null ? "" : "&textSearch=" + search)+ "&sortProperty=createdTime&sortOrder=DESC&type=";
+        JSONObject j;
+        ResultInfo<String> resultInfo = TbApiUtils.bldGet(url, tbToken);
+        System.out.println(resultInfo);
+        if (resultInfo.isSuccess()){
+            j = JSONObject.parseObject(resultInfo.getData());
+            //List<TbDevice> list = JSONObject.parseArray(j.getString("data"), TbDevice.class);
+            TextPageLink nextPageLink = JSONObject.parseObject(j.getString("nextPageLink"), TextPageLink.class);
+//            System.out.println(list);
+            return ResultInfo.success(j, tbToken.substring(7),nextPageLink==null?"":nextPageLink.getTextOffset(),nextPageLink==null?"":nextPageLink.getIdOffset().toString());
+        }
+        return ResultInfo.error("没有查询到数据");
+    }
+
+//    @Override
+//    public ResultInfo getDeviceListByCustomer(int limit, String search, String id) {
+//        String url = TbApiUtils.getDeviceListByCustomerIdApi(limit, search, id);
+//        JSONObject j = TbApiUtils.get(url);
+//        Object data = j.get("data");
+//        //System.out.println(data);
+//        return data != null ? ResultInfo.success(data) : ResultInfo.error("没有查询到数据");
+//    }
+
+    @Override
+    public ResultInfo getDeviceListByCustomer(QueryPo queryPo) {
+        String url;
+        if(StringUtils.isNullString(queryPo.getCustomerId())){
+            url = TbApiUtils.getDeviceListApi(queryPo.getPageSize(),queryPo.getPage()-1,
+                    queryPo.getSearch(),queryPo.getSortProperty(),queryPo.getSortOrder(),queryPo.getType());
+        }else{
+            url = TbApiUtils.getDeviceListByCustomerIdApi(queryPo.getPageSize(),queryPo.getPage()-1,
+                    queryPo.getSearch(),queryPo.getSortProperty(),queryPo.getSortOrder(),queryPo.getType(),queryPo.getCustomerId());
+        }
         JSONObject j = TbApiUtils.get(url);
         Object data = j.get("data");
-        //System.out.println(data);
-        return data != null ? ResultInfo.success(data) : ResultInfo.error("没有查询到数据");
+        return data != null ? ResultInfo.success(j) : ResultInfo.error("没有查询到数据");
     }
 
     @Override

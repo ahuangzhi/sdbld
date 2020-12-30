@@ -154,7 +154,8 @@ ok:
 
 app:
   #定义物联网平台ip及端口
-  url: "http://124.128.148.108:21016"
+#  url: "http://124.128.148.108:21016"
+  url: "http://172.16.33.30:8080"
 
 
 
@@ -168,14 +169,11 @@ tenat:
 #区块链配置
 block:
 #  peerUrl1: "http://125.64.98.21:8545"
-#  peerUrl1: "http://125.64.98.21:6006"
-#  password: "bld123"
-#  sepriPassword: "bld"
-#  balance: "0x2710"
-    peerUrl1: "1"
-    password: "1"
-    sepriPassword: "1"
-    balance: "1"
+  peerUrl1: "http://125.64.98.21:6006"
+  password: "bld123"
+  sepriPassword: "bld"
+  balance: "0x2710"
+
 #服务器登录密码
 linux:
 #  ip: "125.64.98.21"

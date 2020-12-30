@@ -3,6 +3,7 @@ package com.bld.framework.aspectj;
 import com.bld.common.exception.BldException;
 import com.bld.common.utils.security.ShiroUtils;
 import com.bld.project.system.user.domain.User;
+import org.apache.shiro.session.Session;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -22,8 +23,11 @@ public class TokenNotNullAspect {
 
    @Before("tokenNotNullPointCut()")
     public void doBefore() throws Throwable {
-       User sysUser = ShiroUtils.getSysUser();
-       if (sysUser == null){
+       System.out.println("TokenNotNullAspect");
+       Session session = ShiroUtils.getSession();
+       User hzSysUser = (User)session.getAttribute("hzSysUser");
+       //User sysUser = ShiroUtils.getSysUser();
+       if (hzSysUser == null){
            throw new BldException("请重新登录");
        }
    }

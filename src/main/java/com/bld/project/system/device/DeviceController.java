@@ -5,6 +5,7 @@ import com.bld.common.utils.StringUtils;
 import com.bld.common.utils.security.ShiroUtils;
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.project.bldEnums.DeviceAttributeTypeEnum;
+import com.bld.project.sdpo.QueryPo;
 import com.bld.project.system.device.model.TbDevice;
 import com.bld.project.system.device.service.DeviceService;
 import com.bld.project.system.user.domain.ThingsboardUser;
@@ -33,11 +34,17 @@ public class DeviceController {
         return "system/cilent/device.html";
     }
 
-    @RequestMapping("searchDeviceList.json")
+//    @RequestMapping("searchDeviceList.json")
+//    @ResponseBody
+//    public ResultInfo searchDeviceList(@RequestBody ListQuery query){
+//        System.out.println(query);
+//        return StringUtils.isNullString(query.getId()) ? deviceService.searchDevice(query.getLimit(), query.getSearch(), ShiroUtils.getTbToken(),query.getTextOffset(),query.getIdOffset()) : deviceService.getDeviceListByCustomer(query.getLimit(), query.getSearch(), query.getId());
+//    }
+
+    @RequestMapping("hzSearchDeviceList.json")
     @ResponseBody
-    public ResultInfo searchDeviceList(@RequestBody ListQuery query){
-        System.out.println(query);
-        return StringUtils.isNullString(query.getId()) ? deviceService.searchDevice(query.getLimit(), query.getSearch(), ShiroUtils.getTbToken(),query.getTextOffset(),query.getIdOffset()) : deviceService.getDeviceListByCustomer(query.getLimit(), query.getSearch(), query.getId());
+    public ResultInfo hzSearchDeviceList(QueryPo queryPo){
+        return deviceService.getDeviceListByCustomer(queryPo);
     }
 
     @PostMapping("delDeviceDistribution.json")
@@ -174,6 +181,7 @@ public class DeviceController {
     @GetMapping("searchMaintain.json")
     @ResponseBody
     public ResultInfo searchMaintain(String search, int pageSize, int pageNum){
+        System.out.println("DeviceController");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         String cId = null;
         if (!tbUser.isTenantAdmin() && !tbUser.isSysAdmin()){

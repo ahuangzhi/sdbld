@@ -2,6 +2,7 @@ package com.bld.project.system.block.service;
 
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.framework.web.domain.ResultListInfo;
+import com.bld.project.sdpo.QueryPo;
 import com.bld.project.system.block.model.BlockDevice;
 import org.web3j.crypto.CipherException;
 
@@ -63,4 +64,6 @@ public interface BlockDeviceService {
      * @directions 异步修改
      */
     void asyncUpdateBlockDevice(BlockDevice updateBd, BlockDevice whereBd);
+
+    ResultInfo hzGetLog(QueryPo queryPo);
 }

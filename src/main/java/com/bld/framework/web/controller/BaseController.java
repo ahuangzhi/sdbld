@@ -174,6 +174,7 @@ public class BaseController
 
     public User getSysUser()
     {
+        System.out.println("BaseController");
         return ShiroUtils.getSysUser();
     }
 

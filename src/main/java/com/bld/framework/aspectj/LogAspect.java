@@ -75,6 +75,7 @@ public class LogAspect
             }
 
             // 获取当前的用户
+            System.out.println("LogAspect");
             User currentUser = ShiroUtils.getSysUser();
 
             // *========数据库日志=========*//

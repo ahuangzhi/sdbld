@@ -103,6 +103,7 @@ public class CustomerController extends BaseController {
     @GetMapping("getCustomerAttributes.json")
     @ResponseBody
     public ResultInfo getCustomerAttributes(String customerId, String search){
+        System.out.println("CustomerController1");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         if (tbUser.isCustomer()){
             customerId = tbUser.getCustomerId().getId();
@@ -157,6 +158,7 @@ public class CustomerController extends BaseController {
     @PostMapping("updateCustomerAttributes.json")
     @ResponseBody
     public ResultInfo updateCustomerAttributes(@RequestBody JSONObject j){
+        System.out.println("CustomerController2");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         String id = j.getString("id");
         String attribute = j.getString("attribute");
@@ -166,6 +168,7 @@ public class CustomerController extends BaseController {
     @GetMapping("blockCollect.json")
     @ResponseBody
     public ResultInfo getDeviceTypes(String id) throws IOException, CipherException {
+        System.out.println("CustomerController3");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         if (!tbUser.isTenantAdmin() && !tbUser.isSysAdmin()){
             id = tbUser.getCustomerId().getId();

@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://125.64.98.21:5432/bldthingsboard
+    username: postgres
+    password: beilaidian
+    driver-class-name: org.postgresql.Driver

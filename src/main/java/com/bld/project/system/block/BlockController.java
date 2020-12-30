@@ -7,6 +7,7 @@ import com.bld.framework.utils.OkHttpUtil;
 import com.bld.framework.web.domain.ResultInfo;
 import com.bld.framework.web.domain.ResultListInfo;
 import com.bld.framework.web.domain.Results;
+import com.bld.project.sdpo.QueryPo;
 import com.bld.project.system.block.mapper.BlockDeviceMapper;
 import com.bld.project.system.block.mapper.BlockHashMapper;
 import com.bld.project.system.block.model.Block;
@@ -48,6 +49,7 @@ public class BlockController {
     public ResultListInfo searchBlock(ListQuery lq){
         BlockDevice bd = new BlockDevice(lq.getPageNum(), lq.getLimit());
         bd.setSearch(lq.getSearch());
+        System.out.println("BlockController1");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         if (!tbUser.isSysAdmin()){
             bd.setTenantId(tbUser.getTenantId().getId());
@@ -56,6 +58,11 @@ public class BlockController {
             }
         }
         return blockDeviceService.select(bd);
+    }
+
+    @GetMapping("hzGetLog.json")
+    public ResultInfo hzGetLog(QueryPo queryPo){
+        return blockDeviceService.hzGetLog(queryPo);
     }
 
     @GetMapping("searchBlockHash.json")
@@ -70,6 +77,7 @@ public class BlockController {
 
     @GetMapping("searchDeviceGps.json")
     public ResultInfo searchDeviceGps(String chipId, String cId, String tId){
+        System.out.println("BlockController2");
         ThingsboardUser tbUser = ShiroUtils.getSysUser().getThingsboardUser();
         if (!tbUser.isSysAdmin()){
             tId = tbUser.getTenantId().getId();
@@ -259,6 +267,7 @@ public class BlockController {
     @GetMapping("newWallet.json")
     @ResponseBody
     public ResultInfo newWallet() throws NoSuchAlgorithmException, CipherException, InvalidAlgorithmParameterException, NoSuchProviderException, IOException {
+        System.out.println("BlockController3");
         boolean f = ShiroUtils.getSysUser().getThingsboardUser().isTenantAdmin() || ShiroUtils.getSysUser().getThingsboardUser().isSysAdmin();
         if (f){
             Block wallet = BlockUtils.getWallet();
@@ -271,6 +280,7 @@ public class BlockController {
     @GetMapping("balance.json")
     @ResponseBody
     public ResultInfo balance(String wallet){
+        System.out.println("BlockController4");
         if (!ShiroUtils.getSysUser().getThingsboardUser().isTenantAdmin() && !ShiroUtils.getSysUser().getThingsboardUser().isSysAdmin()){
             return ResultInfo.error("没有权限");
         }

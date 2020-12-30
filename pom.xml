@@ -356,7 +356,6 @@
             <artifactId>xmlunit-core</artifactId>
         </dependency>
 
-
     </dependencies>
 
 	<build>

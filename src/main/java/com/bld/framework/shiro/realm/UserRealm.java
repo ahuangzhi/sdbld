@@ -56,6 +56,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+        System.out.println("UserRealm");
         User user = ShiroUtils.getSysUser();
         // 角色列表
         Set<String> roles = new HashSet<String>();

@@ -17,7 +17,7 @@ public interface AssetsService {
      * @param search  查询条件
      * @return  com.bld.framework.web.domain.ResultInfo
      */
-    ResultInfo assetsList(int limit, String search);
+    ResultInfo assetsList(int limit,int pageNum, String search);
     /**
      * @author SOFAS
      * @date   2020/5/27
@@ -25,6 +25,7 @@ public interface AssetsService {
      * @return  com.bld.framework.web.domain.ResultInfo
      */
     ResultInfo getAssetsTypes();
+    ResultInfo hzGetAssetInfos(Integer limit,Integer pageNum);
     /**
      * @author SOFAS
      * @date   2020/5/27
@@ -59,6 +60,6 @@ public interface AssetsService {
      */
     ResultInfo delDistribution(String assetsId);
 
-    ResultInfo clientAssetsList(int limit, String search, String id);
+    ResultInfo clientAssetsList(int limit,int pageNum, String search, String id);
     ResultInfo publicAsset(String assetId);
 }

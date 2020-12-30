@@ -24,6 +24,7 @@ import com.bld.project.system.user.mapper.UserMapper;
 import com.bld.project.system.user.mapper.UserPostMapper;
 import com.bld.project.system.user.mapper.UserRoleMapper;
 import com.bld.project.utils.TbApiUtils;
+import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -507,10 +508,15 @@ public class UserServiceImpl implements IUserService
     @TokenNotNull
     @Override
     public ResultInfo getCurrentUserInfo() {
+        System.out.println("UserServiceImpl");
+        Session session = ShiroUtils.getSession();
+        User hzSysUser = (User) session.getAttribute("hzSysUser");
+        if(hzSysUser != null){
+            return ResultInfo.success(hzSysUser.getThingsboardUser());
+        }
         User sysUser = ShiroUtils.getSysUser();
         /*因为获取sysUser时已经处理过thingsboard的Token空判，所以不用再次判断*/
         String s = OkHttpUtil.get(getCurrentUserInfoApi(), null, sysUser.getAuthorization());
-        System.out.println("qingiqu");
         ThingsboardUser thingsboardUser;
         try {
             thingsboardUser = JSONObject.parseObject(s, ThingsboardUser.class);
@@ -597,9 +603,9 @@ public class UserServiceImpl implements IUserService
         if (StringUtils.isBlank(customerId)){
             return ResultInfo.error("客户ID不能为空");
         }
-        String url = getUserListByCustomerIdApi(limit, pageNum,search, customerId);
+        String url = getUserListByCustomerIdApi(limit, pageNum-1,search, customerId);
         JSONObject j = TbApiUtils.get(url);
-        return j.get("data") == null ? ResultInfo.error("没有查询到数据") : ResultInfo.success(j.get("data"));
+        return j.get("data") == null ? ResultInfo.error("没有查询到数据") : ResultInfo.success(j);
     }
 
     @Override

@@ -28,7 +28,8 @@ public class TbApiUtils {
     /**
      * tb服务器
      */
-    private static final String THINGS_BOARD_HOST = "http://124.128.148.108:21016";
+//    private static final String THINGS_BOARD_HOST = "http://124.128.148.108:21016";
+    private static final String THINGS_BOARD_HOST = "http://172.16.33.30:8080";
     /**
      * 本地
      */
@@ -124,6 +125,9 @@ public class TbApiUtils {
     public static String updateUserInfoApi(){
         return THINGS_BOARD_HOST + "/api/user";
     }
+
+
+
 
     /**
      * @author SOFAS
@@ -283,8 +287,9 @@ public class TbApiUtils {
      * @param search  插叙条件
      * @return  java.lang.String
      */
-    public static String assetsListApi(int limit, String search){
-        return THINGS_BOARD_HOST + "/api/tenant/assets?limit=" + limit + "&textSearch=" + search;
+    public static String assetsListApi(int limit,Integer pageNum, String search){
+//        return THINGS_BOARD_HOST + "/api/tenant/assets?limit=" + limit +"&page="+pageNum+ "&textSearch=" + search;
+        return THINGS_BOARD_HOST + "/api/tenant/assetInfos?pageSize=" + limit +"&page="+pageNum+ "&textSearch=" + search+"&sortProperty=createdTime&sortOrder=DESC&type=";
     }
 
     /**
@@ -295,6 +300,16 @@ public class TbApiUtils {
      */
     public static String getAssetsTypesApi(){
         return THINGS_BOARD_HOST + "/api/asset/types";
+    }
+
+    /**
+     * 客户管理菜单里面的资产管理，新增的下拉框
+     * @param limit
+     * @param pageNum
+     * @return
+     */
+    public static String getAssetsTypesApi(Integer limit,Integer pageNum){
+        return THINGS_BOARD_HOST + "/api/tenant/assetInfos?pageSize="+limit+"&page="+pageNum+"&sortProperty=name&sortOrder=ASC&type=";
     }
 
     /**
@@ -334,8 +349,9 @@ public class TbApiUtils {
         return THINGS_BOARD_HOST + "/api/customer/asset/" + assetsId;
     }
 
-    public static String clientAssetsList(int limit, String search, String id){
-        return THINGS_BOARD_HOST + "/api/customer/" + id + "/assets?limit=" + limit + "&textSearch=" + search;
+    public static String clientAssetsList(int limit, int pageNum,String search, String id){
+//        return THINGS_BOARD_HOST + "/api/customer/" + id + "/assets?limit=" + limit + "&textSearch=" + search;
+        return THINGS_BOARD_HOST + "/api/customer/" + id + "/assetInfos?pageSize=" + limit + "&page=" + pageNum + "&sortProperty=createdTime&sortOrder=DESC&type=";
     }
 
     public static  String publicAssetApi(String assetId){
@@ -384,8 +400,16 @@ public class TbApiUtils {
         return THINGS_BOARD_HOST + "/api/device/" + deviceId;
     }
 
-    public static String getDeviceListByCustomerIdApi(Integer limit, String search, String customerId){
-        return THINGS_BOARD_HOST + "/api/customer/" + customerId + "/devices?limit=" + limit + "&textSearch=" + (StringUtils.isBlank(search) ? "" : search);
+    public static String getDeviceListByCustomerIdApi(Integer pageSize, Integer page,String search, String sortProperty,String sortOrder,String type,String customerId){
+        return THINGS_BOARD_HOST + "/api/customer/" + customerId + "/deviceInfos?pageSize=" + pageSize + "&page=" + page +
+                "&textSearch=" + (StringUtils.isBlank(search) ? "" : search)+"&sortProperty="+
+                sortProperty+"&sortOrder="+sortOrder+"&type="+type;
+    }
+
+    public static String getDeviceListApi(Integer pageSize, Integer page,String search, String sortProperty,String sortOrder,String type){
+        return THINGS_BOARD_HOST + "/api/tenant/deviceInfos?pageSize=" + pageSize + "&page=" + page +
+                "&textSearch=" + (StringUtils.isBlank(search) ? "" : search)+"&sortProperty="+sortProperty+
+                "&sortOrder="+sortOrder+"&type="+type;
     }
 
     public static String getDeviceTokenApi(String deviceId){
@@ -473,5 +497,9 @@ public class TbApiUtils {
      */
     public static String getTenantAdminListApi(String tenantId, int limit, String search){
         return THINGS_BOARD_HOST + "/api/tenant/" + tenantId + "/users?limit=" + limit + "&textSearch=" + search;
+    }
+
+    public static String hzGetLog(Integer pageSize, Integer page, String search,String startTime,String endTime,String sortOrder,String sortProperty){
+        return THINGS_BOARD_HOST + "/api/audit/logs?pageSize="+ pageSize +"&page="+ page + (search == null ? "" : "&textSearch="+search)+"&startTime="+startTime+"&endTime="+endTime+"&sortOrder="+sortOrder+"&sortProperty="+sortProperty;
     }
 }

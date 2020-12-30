@@ -75,6 +75,7 @@ public class DataScopeAspect
             return;
         }
         // 获取当前的用户
+        System.out.println("DataScopeAspect");
         User currentUser = ShiroUtils.getSysUser();
         if (currentUser != null)
         {
