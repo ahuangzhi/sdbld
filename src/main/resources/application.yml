@@ -169,7 +169,7 @@ tenat:
 #区块链配置
 block:
 #  peerUrl1: "http://125.64.98.21:8545"
-  peerUrl1: "http://125.64.98.21:6006"
+  peerUrl1: "1"
   password: "bld123"
   sepriPassword: "bld"
   balance: "0x2710"

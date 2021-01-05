@@ -100,6 +100,7 @@ public class LoginController extends BaseController {
             session.setAttribute("errorTime",  null);
             Object token1 = ShiroUtils.getTbToken();
             session2.setAttribute("hzSysUser",sysUser);
+            User hzSysUser1 = (User) session.getAttribute("hzSysUser");
             return ResultInfo.success(token1, "登陆成功");
         } catch (NullPointerException e) {
             session.setAttribute("errorNum",  errorNum + 1);

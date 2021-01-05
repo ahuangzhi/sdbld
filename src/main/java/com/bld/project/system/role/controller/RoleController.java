@@ -76,11 +76,11 @@ public class RoleController extends BaseController {
     @Value("${app.url}")
     private String url;
 
-    @Value("${block.peerUrl1}")
-    private String peerUrl1;
-
-    @Value("${block.balance}")
-    private String balance;
+//    @Value("${block.peerUrl1}")
+//    private String peerUrl1;
+//
+//    @Value("${block.balance}")
+//    private String balance;
 
     //自动新增用户名
     @Value("${tenat.userName}")
@@ -112,54 +112,54 @@ public class RoleController extends BaseController {
         return prefix + "/role";
     }
 
-    @PostMapping("/list")
-    @ResponseBody
-    public TableDataInfo list() throws Exception {
-        User user = getSysUser();
-        startPage();
-        List<Pileasset> pileassets = roleService.listPileasset();
-        for (Pileasset pileasset : pileassets) {
-            if (pileasset.getFromWallet() == null || "".equals(pileasset.getFromWallet())) {
-                pileasset.setMoney("0");
-            } else {
-                //获取余额
-                String jp = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"" + pileasset.getFromWallet() + "\", \"latest\"],\"id\":1}";
-                String s5 = OkHttpUtil.postJsonParams1(peerUrl1, jp);
-                JSONObject jsonObject8 = JSONObject.parseObject(s5);
-                String result1 = jsonObject8.getString("result");
-                String substring = result1.substring(2, result1.length());
-                BigInteger big = new BigInteger(substring.trim(), 16);
-                String money = big.toString();
-                pileasset.setMoney(money);
-            }
-            Random random = new Random();
-            double v = random.nextDouble() * (5.9 - 5.1) + 5.1;
-            double ua = random.nextDouble() * (220 - 215) + 220;
-            double pa = v * ua;
-            BigDecimal bigDecimal = new BigDecimal(v).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal bigDecimal2 = new BigDecimal(ua).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal bigDecimal3 = new BigDecimal(pa).setScale(2, RoundingMode.HALF_UP);
-            double v1 = bigDecimal.doubleValue();
-            double v2 = bigDecimal2.doubleValue();
-            double v3 = bigDecimal3.doubleValue();
-            //*System.out.println(v);*//*
-            String blockData = "{\"UA\":" + "\"" + v2 + "\"," + "\"IA\":" + "\"" + v1 + "\"," + "\"PA\":" + "\"" + v3 + "\"" + "}";
-            //System.out.println(accessToken);
-            pileasset.setBlockData(blockData);
-        }
-
-        //获取账户权限验证码
-
-
-        //List<Role> list1 = roleService.selectRoleList(role);
-
-/*
-        PageInfo<Device> pageInfo=new PageInfo(pileassets,pagesize);
-*/
-        TableDataInfo dataTable = getDataTable(pileassets);
-        // System.out.println(dataTable.toString());
-        return dataTable;
-    }
+//    @PostMapping("/list")
+//    @ResponseBody
+//    public TableDataInfo list() throws Exception {
+//        User user = getSysUser();
+//        startPage();
+//        List<Pileasset> pileassets = roleService.listPileasset();
+//        for (Pileasset pileasset : pileassets) {
+//            if (pileasset.getFromWallet() == null || "".equals(pileasset.getFromWallet())) {
+//                pileasset.setMoney("0");
+//            } else {
+//                //获取余额
+//                String jp = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"" + pileasset.getFromWallet() + "\", \"latest\"],\"id\":1}";
+//                String s5 = OkHttpUtil.postJsonParams1(peerUrl1, jp);
+//                JSONObject jsonObject8 = JSONObject.parseObject(s5);
+//                String result1 = jsonObject8.getString("result");
+//                String substring = result1.substring(2, result1.length());
+//                BigInteger big = new BigInteger(substring.trim(), 16);
+//                String money = big.toString();
+//                pileasset.setMoney(money);
+//            }
+//            Random random = new Random();
+//            double v = random.nextDouble() * (5.9 - 5.1) + 5.1;
+//            double ua = random.nextDouble() * (220 - 215) + 220;
+//            double pa = v * ua;
+//            BigDecimal bigDecimal = new BigDecimal(v).setScale(2, RoundingMode.HALF_UP);
+//            BigDecimal bigDecimal2 = new BigDecimal(ua).setScale(2, RoundingMode.HALF_UP);
+//            BigDecimal bigDecimal3 = new BigDecimal(pa).setScale(2, RoundingMode.HALF_UP);
+//            double v1 = bigDecimal.doubleValue();
+//            double v2 = bigDecimal2.doubleValue();
+//            double v3 = bigDecimal3.doubleValue();
+//            //*System.out.println(v);*//*
+//            String blockData = "{\"UA\":" + "\"" + v2 + "\"," + "\"IA\":" + "\"" + v1 + "\"," + "\"PA\":" + "\"" + v3 + "\"" + "}";
+//            //System.out.println(accessToken);
+//            pileasset.setBlockData(blockData);
+//        }
+//
+//        //获取账户权限验证码
+//
+//
+//        //List<Role> list1 = roleService.selectRoleList(role);
+//
+///*
+//        PageInfo<Device> pageInfo=new PageInfo(pileassets,pagesize);
+//*/
+//        TableDataInfo dataTable = getDataTable(pileassets);
+//        // System.out.println(dataTable.toString());
+//        return dataTable;
+//    }
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -213,24 +213,24 @@ public class RoleController extends BaseController {
         Pileasset pileasset1 = roleService.pileassetbyChipId(pileasset.getChipId());
         Integer id = pileasset1.getId();
         //判断奇偶
-        if (id % 2 == 0) {
-            String s4 = OkHttpUtil.postJsonParams1(peerUrl1, json5);
-            String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
-            String wallent = JSONObject.parseObject(s4).getString("result");
-            String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
-            pileasset1.setFromWallet(wallent);
-            pileasset1.setPeerUrl(peerUrl1);
-            pileasset1.setToWallet(coinbase);
-        } else {
-            String s4 = OkHttpUtil.postJsonParams1(peerUrl1, json5);
-            String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
-            String wallent = JSONObject.parseObject(s4).getString("result");
-            String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
-            pileasset1.setFromWallet(wallent);
-            pileasset1.setPeerUrl(peerUrl1);
-            pileasset1.setToWallet(coinbase);
-        }
-        int i = roleService.updatePileasset(pileasset1);
+//        if (id % 2 == 0) {
+//            String s4 = OkHttpUtil.postJsonParams1(peerUrl1, json5);
+//            String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
+//            String wallent = JSONObject.parseObject(s4).getString("result");
+//            String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
+//            pileasset1.setFromWallet(wallent);
+//            pileasset1.setPeerUrl(peerUrl1);
+//            pileasset1.setToWallet(coinbase);
+//        } else {
+//            String s4 = OkHttpUtil.postJsonParams1(peerUrl1, json5);
+//            String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
+//            String wallent = JSONObject.parseObject(s4).getString("result");
+//            String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
+//            pileasset1.setFromWallet(wallent);
+//            pileasset1.setPeerUrl(peerUrl1);
+//            pileasset1.setToWallet(coinbase);
+//        }
+//        int i = roleService.updatePileasset(pileasset1);
         return toAjax(save);
     }
 
@@ -660,26 +660,26 @@ public class RoleController extends BaseController {
      * @param json
      * @return
      */
-    @PostMapping("Telemetry ")
-    @ResponseBody
-    public JSONObject Telemetry(@RequestBody String json) {
-        JSONObject jsonObject = JSONObject.parseObject(json);
-        String chipID = jsonObject.getString("ChipID");
-        jsonObject.remove("ChipID");
-        String status = jsonObject.toJSONString();
-        String hex = "0x" + Hex.str2HexStr(status);
-        Pileasset pileasset = roleService.pileassetbyChipId(chipID);
-        String sendTransactionStr = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\n" +
-                "  \"from\": \"" + pileasset.getToWallet() + "\",\n" +
-                "  \"to\": \"" + pileasset.getFromWallet() + "\",\n" +
-                "  \"value\":\"" + balance + "\",\n" +
-                "  \"data\":\"" + hex + "\"\n" +
-                "},\"bld123\"],\"id\":11}";
-        String s = OkHttpUtil.postJsonParams1(pileasset.getPeerUrl(), sendTransactionStr);
-        JSONObject jsonObject1 = JSONObject.parseObject(s);
-        jsonObject1.replace("result", "TXhash");
-        return jsonObject1;
-    }
+//    @PostMapping("Telemetry ")
+//    @ResponseBody
+//    public JSONObject Telemetry(@RequestBody String json) {
+//        JSONObject jsonObject = JSONObject.parseObject(json);
+//        String chipID = jsonObject.getString("ChipID");
+//        jsonObject.remove("ChipID");
+//        String status = jsonObject.toJSONString();
+//        String hex = "0x" + Hex.str2HexStr(status);
+//        Pileasset pileasset = roleService.pileassetbyChipId(chipID);
+//        String sendTransactionStr = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\n" +
+//                "  \"from\": \"" + pileasset.getToWallet() + "\",\n" +
+//                "  \"to\": \"" + pileasset.getFromWallet() + "\",\n" +
+//                "  \"value\":\"" + balance + "\",\n" +
+//                "  \"data\":\"" + hex + "\"\n" +
+//                "},\"bld123\"],\"id\":11}";
+//        String s = OkHttpUtil.postJsonParams1(pileasset.getPeerUrl(), sendTransactionStr);
+//        JSONObject jsonObject1 = JSONObject.parseObject(s);
+//        jsonObject1.replace("result", "TXhash");
+//        return jsonObject1;
+//    }
 
 
     @Autowired
@@ -765,35 +765,35 @@ public class RoleController extends BaseController {
      * @date 2020/7/3
      * @directions 更新区块链记录
      */
-    @Async
-    public void asyncUpdateBlock(BlockDevice blockDevice, JSONObject resJson) {
-        Object newHash = resJson.get("result");
-        BlockHash bh = new BlockHash();
-        bh.setChipId(blockDevice.getChipId());
-        bh.setFromWallet(blockDevice.getToWallet());
-        bh.setToWallet(blockDevice.getDeviceWallet());
-        bh.setHash(newHash.toString());
-
-        BlockDevice whereBd = new BlockDevice();
-        whereBd.setId(blockDevice.getId());
-        BlockDevice updateBd = new BlockDevice();
-        String time = String.valueOf(System.currentTimeMillis());
-        /*更新余额*/
-        Long dm = blockDevice.getDeviceMoney();
-        String substring = balance.substring(2);
-        BigInteger bigint = new BigInteger(substring, 16);
-        long money = bigint.longValue();
-        dm += money;
-        updateBd.setDeviceMoney(dm);
-        bh.setMoney(money);
-
-        if (blockDeviceMapper.update(updateBd, whereBd) < 1) {
-            log.error("更新区块链设备余额失败，id：{}， 金额:：{}", blockDevice.getId(), money);
-        }
-        if (blockHashMapper.add(bh) < 1) {
-            log.error("添加设备区块链历史交易记录失败，参数：{}", JSONObject.toJSONString(bh));
-        }
-    }
+//    @Async
+//    public void asyncUpdateBlock(BlockDevice blockDevice, JSONObject resJson) {
+//        Object newHash = resJson.get("result");
+//        BlockHash bh = new BlockHash();
+//        bh.setChipId(blockDevice.getChipId());
+//        bh.setFromWallet(blockDevice.getToWallet());
+//        bh.setToWallet(blockDevice.getDeviceWallet());
+//        bh.setHash(newHash.toString());
+//
+//        BlockDevice whereBd = new BlockDevice();
+//        whereBd.setId(blockDevice.getId());
+//        BlockDevice updateBd = new BlockDevice();
+//        String time = String.valueOf(System.currentTimeMillis());
+//        /*更新余额*/
+//        Long dm = blockDevice.getDeviceMoney();
+//        String substring = balance.substring(2);
+//        BigInteger bigint = new BigInteger(substring, 16);
+//        long money = bigint.longValue();
+//        dm += money;
+//        updateBd.setDeviceMoney(dm);
+//        bh.setMoney(money);
+//
+//        if (blockDeviceMapper.update(updateBd, whereBd) < 1) {
+//            log.error("更新区块链设备余额失败，id：{}， 金额:：{}", blockDevice.getId(), money);
+//        }
+//        if (blockHashMapper.add(bh) < 1) {
+//            log.error("添加设备区块链历史交易记录失败，参数：{}", JSONObject.toJSONString(bh));
+//        }
+//    }
 
 
     //    -------------------------------许萌写的设备操作相关接口--------------------------------------------
@@ -808,30 +808,30 @@ public class RoleController extends BaseController {
      * 数据上链
      * bld数据上链，之前的老哥写在这里，时间不够就不做多的修改
      */
-    @PostMapping("block")
-    @ResponseBody
-    public JSONObject block(@RequestBody JSONObject param) throws IOException, CipherException {
-        String chipId = param.getString("ChipID");
-        BlockDevice bd = new BlockDevice();
-        bd.setChipId(chipId);
-        List<BlockDevice> list = blockDeviceMapper.select(bd);
-        if (list == null || list.size() < 1) {
-            return JSONObject.parseObject("该chipId没有对应的设备");
-        }
-        BlockDevice blockDevice = list.get(0);
-
-        ResultInfo<String> br = BlockUtils.blockTransaction("a963d384cac4927a4f632be6d51c74e3d549538f", blockDevice.getDeviceWallet(), new BigInteger("10000", 10), BlockUtils.gas, BlockUtils.gas_limit, param.toJSONString());
-        String data = br.getData();
-
-        JSONObject res = new JSONObject();
-        if (br.isSuccess() && !StringUtils.isNullString(data)){
-            res.put("result", data);
-            asyncUpdateBlock(blockDevice, res);
-        }else {
-            res.put("message", br.getMessage());
-        }
-        return res;
-    }
+//    @PostMapping("block")
+//    @ResponseBody
+//    public JSONObject block(@RequestBody JSONObject param) throws IOException, CipherException {
+//        String chipId = param.getString("ChipID");
+//        BlockDevice bd = new BlockDevice();
+//        bd.setChipId(chipId);
+//        List<BlockDevice> list = blockDeviceMapper.select(bd);
+//        if (list == null || list.size() < 1) {
+//            return JSONObject.parseObject("该chipId没有对应的设备");
+//        }
+//        BlockDevice blockDevice = list.get(0);
+//
+//        ResultInfo<String> br = BlockUtils.blockTransaction("a963d384cac4927a4f632be6d51c74e3d549538f", blockDevice.getDeviceWallet(), new BigInteger("10000", 10), BlockUtils.gas, BlockUtils.gas_limit, param.toJSONString());
+//        String data = br.getData();
+//
+//        JSONObject res = new JSONObject();
+//        if (br.isSuccess() && !StringUtils.isNullString(data)){
+//            res.put("result", data);
+//            asyncUpdateBlock(blockDevice, res);
+//        }else {
+//            res.put("message", br.getMessage());
+//        }
+//        return res;
+//    }
 
     @Resource
     private DeviceService deviceService;

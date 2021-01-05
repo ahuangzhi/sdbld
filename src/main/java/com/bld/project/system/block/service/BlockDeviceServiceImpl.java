@@ -48,13 +48,13 @@ public class BlockDeviceServiceImpl implements BlockDeviceService {
     @Resource
     private DeviceService deviceService;
 
-    @Autowired
+    @Resource
     private HzBlockDeviceMapper hzBlockDeviceMapper;
 
-    @Value("${block.peerUrl1}")
-    private String peerUrl1;
-    @Value("${block.password}")
-    private String walletPassword;
+//    @Value("${block.peerUrl1}")
+//    private String peerUrl1;
+//    @Value("${block.password}")
+//    private String walletPassword;
 
     @Override
     public ResultListInfo select(BlockDevice bd) {
@@ -115,7 +115,7 @@ public class BlockDeviceServiceImpl implements BlockDeviceService {
         }else {
             //        获取转账钱包
             String coinbaseJson = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_coinbase\",\"params\":[],\"id\":64}";
-            String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
+            String coinbaseStr = OkHttpUtil.postJsonParams1("1", coinbaseJson);
             String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
             bd.setToWallet(coinbase);
 //        新建设备钱包
@@ -125,7 +125,8 @@ public class BlockDeviceServiceImpl implements BlockDeviceService {
 
 //        获取转账钱包
         String coinbaseJson = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_coinbase\",\"params\":[],\"id\":64}";
-        String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
+//        String coinbaseStr = OkHttpUtil.postJsonParams1(peerUrl1, coinbaseJson);
+        String coinbaseStr = OkHttpUtil.postJsonParams1("", coinbaseJson);
         String coinbase = JSONObject.parseObject(coinbaseStr).getString("result");
         bd.setToWallet(coinbase);
 //        新建设备钱包
