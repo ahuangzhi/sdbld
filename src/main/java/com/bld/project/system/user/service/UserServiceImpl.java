@@ -514,9 +514,9 @@ public class UserServiceImpl implements IUserService
         if(hzSysUser != null){
             return ResultInfo.success(hzSysUser.getThingsboardUser());
         }
-        User sysUser = ShiroUtils.getSysUser();
+        //User sysUser = ShiroUtils.getSysUser();
         /*因为获取sysUser时已经处理过thingsboard的Token空判，所以不用再次判断*/
-        String s = OkHttpUtil.get(getCurrentUserInfoApi(), null, sysUser.getAuthorization());
+        String s = OkHttpUtil.get(getCurrentUserInfoApi(), null, hzSysUser.getAuthorization());
         ThingsboardUser thingsboardUser;
         try {
             thingsboardUser = JSONObject.parseObject(s, ThingsboardUser.class);
@@ -528,8 +528,8 @@ public class UserServiceImpl implements IUserService
             e.printStackTrace();
             return ResultInfo.error("获取用户信息失败，请稍后再试");
         }
-        sysUser.setThingsboardUser(thingsboardUser);
-        ShiroUtils.setSysUser(sysUser);
+        hzSysUser.setThingsboardUser(thingsboardUser);
+        ShiroUtils.setSysUser(hzSysUser);
         return ResultInfo.success(thingsboardUser);
     }
 

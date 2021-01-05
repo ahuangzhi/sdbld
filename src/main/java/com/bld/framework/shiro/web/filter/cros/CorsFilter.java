@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2020/6/23
  * @directions  cros跨域支持
 */
-@SpringBootApplication
 @Configuration
 public class CorsFilter implements WebMvcConfigurer {
 

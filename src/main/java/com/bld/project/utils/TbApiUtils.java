@@ -28,8 +28,8 @@ public class TbApiUtils {
     /**
      * tb服务器
      */
-//    private static final String THINGS_BOARD_HOST = "http://124.128.148.108:21016";
-    private static final String THINGS_BOARD_HOST = "http://172.16.33.30:8080";
+    private static final String THINGS_BOARD_HOST = "http://124.128.148.108:21016";
+//    private static final String THINGS_BOARD_HOST = "http://172.16.33.30:8080";
     /**
      * 本地
      */
